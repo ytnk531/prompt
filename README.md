@@ -1,8 +1,6 @@
 # Prompt
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/prompt`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Prompting with gui. Useful when interact with yes/no question.
 
 ## Installation
 
@@ -21,8 +19,13 @@ Or install it yourself as:
     $ gem install prompt
 
 ## Usage
+This code spawns a prompt to GUI. And then you can collect answer as the return value.
 
-TODO: Write usage instructions here
+```ruby
+require 'prompt'
+
+answer = Prompt.ask('Are you happy?')
+```
 
 ## Development
 
