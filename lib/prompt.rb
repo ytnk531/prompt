@@ -1,34 +1,40 @@
-require_relative 'prompt/version'
-require 'gtk3'
+require_relative "prompt/version"
+require "gtk3"
 
 module Prompt
   class Error < StandardError; end
 
   module_function
-  def ask(question)
-    builder_file = "#{__dir__}/../myapp.glade"
-    builder = Gtk::Builder.new(file: builder_file)
 
+  def ask(question)
     ret = nil
-    win = builder.get_object('win')
-    yes = builder.get_object('yes')
-    yes.signal_connect('clicked') do
-      ret = true
-      Gtk.main_quit
-    end
-    no = builder.get_object('no')
-    no.signal_connect('clicked') do
-      ret = false
-      Gtk.main_quit
-    end
-    q = builder.get_object('question')
-    q.set_markup(question)
-    win.signal_connect('destroy') do
-      ret = false
-      Gtk.main_quit
-    end
-    win.show_all
+    window = Gtk::Window.new
+    setup_dialog window, question
+
     Gtk.main
-    ret
+    @ret
+  end
+
+  def setup_dialog(window, question)
+    dialog = Gtk::Dialog.new(
+      parent: window,
+      title: "Asking...",
+      buttons: [[Gtk::Stock::YES, :yes],
+                [Gtk::Stock::NO, :no]]
+    )
+    content_area = dialog.child
+    label = Gtk::Label.new(question)
+    content_area.pack_start label, expand: true, padding: 10
+    dialog.signal_connect("response") do |_widget, response|
+      @ret = case response
+             when Gtk::ResponseType::YES
+               true
+             when Gtk::ResponseType::NO
+               false
+             end
+      Gtk.main_quit
+    end
+    dialog.show_all
+    dialog
   end
 end
