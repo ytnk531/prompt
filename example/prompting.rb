@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-require 'prompt'
+require "prompt"
 
-answer = Prompt.ask('Continue?')
-puts answer
+puts Prompt.ask("Continue?")
+puts Prompt.ask_input("お名前は？")
